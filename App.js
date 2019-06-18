@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styles from './App.module.css'
 import sheet1 from './1.png'
 
@@ -32,19 +32,51 @@ function App() {
     [11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13],
   ]
 
-  useEffect(() => {
-    console.log(JSON.stringify(m))
-  }, [])
+  // useEffect(() => {
+  //   console.log(JSON.stringify(m))
+  // }, [])
 
   let sheetW = 9
 
-  let [camXY, setCamXY] = useState([10, 20])
+  let [camXY, setCamXY] = useState([0, 4])
+
+  let appRef = useRef()
+  useEffect(() => {
+    appRef.current.focus()
+  }, [])
+
+  let [char, setChar] = useState([0, 15])
+
+  let [camSize, setCamSize] = useState([window.innerWidth, window.innerHeight])
+  useEffect(() => {
+
+    let fn = () => setCamSize([window.innerWidth, window.innerHeight])
+    window.addEventListener('resize', fn)
+    return () => window.removeEventListener('resize', fn)
+
+  }, [])
 
   return (
     <div
+      ref={appRef}
       className={styles.App}
+      tabIndex="0"
       onMouseMove={e => {
-        setCamXY([~~(e.clientX / 32), ~~(e.clientY / 32)])
+        // setCamXY([~~(e.clientX / 32), ~~(e.clientY / 32)])
+      }}
+      onKeyDown={e => {
+        let x = {
+          ArrowUp: [0, -1],
+          ArrowRight: [1, 0],
+          ArrowDown: [0, 1],
+          ArrowLeft: [-1, 0],
+        }
+        let dXY = x[e.key] || []
+        // alert(x[e.key])
+        // alert(camSize)
+        setChar(char => {
+          return [char[0] + dXY[0], char[1] + dXY[1]]
+        })
       }}
     >
 
@@ -55,7 +87,7 @@ function App() {
           style={{
             width: `${m[0].length * 32}px`,
             height: `${m.length * 32}px`,
-            transform: `translate(${-(camXY[0] * 32)}px, ${-(camXY[1] * 32)}px)`,
+            transform: `translate(${-(char[0] * 32) + camSize[0] / 2 - 32 / 2}px, ${-(char[1] * 32 - camSize[1] / 2 + 32 / 2)}px)`,
           }}
         >
 
@@ -99,6 +131,18 @@ function App() {
 
             })
           }
+
+          <div
+            className={styles.Char}
+            style={{
+              // left: `${char[0] * 32}px`,
+              // top: `${char[1] * 32}px`,
+
+              transform: `translate(${char[0] * 32}px, ${char[1] * 32}px)`,
+            }}
+          >
+            🚶‍♂️
+          </div>
 
         </div>
       </div>
