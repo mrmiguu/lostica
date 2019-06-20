@@ -102,6 +102,8 @@ function App() {
           style={{
             width: `${m[0].length * 32}px`,
             height: `${m.length * 32}px`,
+            // left: `${-(char[0] * 32) + camSize[0] / 2 - 32 / 2}px`,
+            // top: `${-(char[1] * 32 - camSize[1] / 2 + 32 / 2)}px`,
             transform: `translate(${-(char[0] * 32) + camSize[0] / 2 - 32 / 2}px, ${-(char[1] * 32 - camSize[1] / 2 + 32 / 2)}px)`,
           }}
         >
@@ -152,7 +154,6 @@ function App() {
             style={{
               // left: `${char[0] * 32}px`,
               // top: `${char[1] * 32}px`,
-
               transform: `translate(${char[0] * 32}px, ${char[1] * 32}px)`,
             }}
           >
