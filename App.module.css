@@ -2,7 +2,9 @@
   position: fixed;
   width: 100%;
   height: 100%;
-  transform: scale(2, 2);
+  transform: scale(2, 2) translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
   /* border: 1px dashed red; */
 }
 .Camera {
@@ -18,9 +20,9 @@
   overflow: hidden;
   
   transition:
-    transform 0.75s ease-out,
-    left 0.75s ease-out,
-    top 0.75s ease-out;
+    transform 1s linear,
+    left 1s linear,
+    top 1s linear;
 
   will-change: transform;
 
@@ -31,9 +33,9 @@
   font-size: 32px;
   
   transition:
-    transform 0.375s linear,
-    left 0.375s linear,
-    top 0.375s linear;
+    transform 0.5s linear,
+    left 0.5s linear,
+    top 0.5s linear;
     
   will-change: transform;
 }
