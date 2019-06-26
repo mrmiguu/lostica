@@ -2,9 +2,9 @@
   position: fixed;
   width: 100%;
   height: 100%;
-  transform: scale(2, 2) translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000;
+  transform: scale(2, 2)/*  translateZ(0) */;
+  /* backface-visibility: hidden; */
+  /* perspective: 1000; */
   /* border: 1px dashed red; */
 }
 .Camera {
@@ -26,7 +26,7 @@
 
   will-change: transform;
 
-  /* border: 1px dashed blue; */
+  border: 1px dashed blue;
 }
 .Char {
   position: absolute;
@@ -37,7 +37,7 @@
     left 0.5s linear,
     top 0.5s linear;
     
-  will-change: transform;
+  /* will-change: transform; */
 }
 .Tile {
   position: absolute;

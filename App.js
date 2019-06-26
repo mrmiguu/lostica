@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
+import Cam from './Cam'
 import { useAnimationFrame } from './hooks'
-import styles from './App.module.css'
+import styles from './App.module.scss'
+
 import sheet1 from './grass-2.png'
+let sheet1W = 3
+let sheet1H = 3
 
 function xyStyle(x, y) {
   let isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
@@ -51,6 +55,20 @@ let m = [
   [3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5],
 ]
 
+let ty = {
+  [sheet1]: {
+    0: 'b',
+    1: 'b',
+    2: 'b',
+    3: 'b',
+    4: 'b',
+    5: 'b',
+    6: 'b',
+    7: 'b',
+    8: 'b',
+  }
+}
+
 let keyStep = {
   ArrowUp: [null, -1],
   ArrowRight: [1, 0],
@@ -59,7 +77,7 @@ let keyStep = {
 }
 
 function App() {
-  let sheetW = 3
+
 
   let appRef = useRef()
   useEffect(() => {
@@ -90,6 +108,12 @@ function App() {
       let [dx, dy] = keyStep[key] || [null, 0]
 
       setChar(([x, y]) => {
+        if (x + dx < 0) return [x, y]
+        if (x + dx >= (m[y + dy] || []).length) return [x, y]
+        if (y + dy < 0) return [x, y]
+        if (y + dy >= m.length) return [x, y]
+        let type = ty[sheet1][m[y + dy][x + dx]]
+        if (type === 'b') return [x, y]
         return [x + dx, y + dy]
       })
 
@@ -134,8 +158,8 @@ function App() {
 
               return row.map((tile, x) => {
 
-                let srcX = (tile % sheetW) * 32
-                let srcY = ~~(tile / sheetW) * 32
+                let srcX = (tile % sheet1W) * 32
+                let srcY = ~~(tile / sheet1H) * 32
 
                 // console.log(`(${x},${y}) ${srcX} ${srcY}`)
 
@@ -171,18 +195,21 @@ function App() {
             })
           }
 
-          <div
-            className={styles.Char}
+          <Cam
+            // camRef={ourCam}
             style={{
               ...xyStyle(
                 char[0] * 32,
                 char[1] * 32,
               ),
             }}
-          >
-            🚶‍♂️
-          </div>
-
+            flip={(key || '').indexOf('Left') === -1}
+            anim={key ? 'walk' : 'stand'}
+            hat="🎩"
+          // onStream={stream => {
+          //   // WebRTC stuff
+          // }}
+          />
         </div>
       </div>
 
